@@ -1,0 +1,41 @@
+{
+    "name": "twowholeworms/vinari-core",
+    "description": "Collection of shared code, models, and stuff used across a bunch of my projects",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "vinari",
+        "vinari-core"
+    ],
+    "homepage": "https://github.com/TwoWholeWorms/VinariCore",
+    "authors": [
+        {
+            "name": "Benjamin Nolan",
+            "email": "benjamin.nolan@vinari.co.uk",
+            "homepage": "https://ben.mu/"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "zendframework/zendframework": "~2.5",
+        "urbanairship/urbanairship": ">=0.1.3",
+        "zf-commons/zfc-user-doctrine-orm": "*",
+        "zf-commons/zfc-admin": "*",
+        "zf-commons/zfc-user": "*",
+        "zf-commons/zfc-twig": "*",
+        "doctrine/doctrine-module": "*",
+        "doctrine/doctrine-orm-module": "*",
+        "bjyoungblood/bjy-authorize": "*",
+        "hounddog/doctrine-data-fixture-module": "*",
+        "zf-commons/zfc-base": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "VinariCore": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}

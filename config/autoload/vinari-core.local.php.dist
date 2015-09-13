@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'session' => [
+		'container_name' => 'vinari_core',
+        'storage' => 'Zend\\Session\\Storage\\SessionArrayStorage',
+        'save_handler' => 'Zend\\Session\\SaveHandler\\DbTableGateway',
+        'config' => [
+            'class' => 'Zend\\Session\\Config\\SessionConfig',
+            'options' => [
+        		'remember_me_seconds' => 31536000,
+        		'cookie_lifetime' => 31536000,
+        		'use_cookies' => true,
+        		'cookie_httponly' => true,
+            ],
+        ],
+    ],
+    'email' => [
+        'entity' => 'VinariCore\\Entity\\Email',
+        'email' => [
+            'from_address' => 'no-reply@my-domain.com',
+            'from_name' => 'My Site Name',
+            'transport' => [
+                'type' => 'sendmail',
+                // 'options' => [
+                //     ''
+                // ],
+            ],
+        ],
+    ],
+];

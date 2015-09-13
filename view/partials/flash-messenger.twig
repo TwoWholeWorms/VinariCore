@@ -1,0 +1,6 @@
+{% set flash = flashMessenger() %}
+{{ flash.setMessageOpenFormat('<div%s><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><ul><li>').setMessageSeparatorString('</li><li>').setMessageCloseString('</li></ul></div>') %}
+{{ flash.render('error',   ['alert', 'alert-dismissable', 'alert-danger'])|raw }}
+{{ flash.render('info',    ['alert', 'alert-dismissable', 'alert-info'])|raw }}
+{{ flash.render('default', ['alert', 'alert-dismissable', 'alert-warning'])|raw }}
+{{ flash.render('success', ['alert', 'alert-dismissable', 'alert-success'])|raw }}
