@@ -15,16 +15,18 @@ return [
             ],
         ],
     ],
-    'email' => [
-        'entity' => 'VinariCore\\Entity\\Email',
+    'vinari-core' => [
         'email' => [
-            'from_address' => 'no-reply@my-domain.com',
-            'from_name' => 'My Site Name',
-            'transport' => [
-                'type' => 'sendmail',
-                // 'options' => [
-                //     ''
-                // ],
+            'entity' => 'VinariCore\\Entity\\Email',
+            'email' => [
+                'from_address' => 'no-reply@my-domain.com',
+                'from_name' => 'My Site Name',
+                'transport' => [
+                    'type' => 'sendmail',
+                    // 'options' => [
+                    //     ''
+                    // ],
+                ],
             ],
         ],
     ],
