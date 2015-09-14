@@ -10,6 +10,7 @@ return [
             'options' => [
         		'remember_me_seconds' => 31536000,
         		'cookie_lifetime' => 31536000,
+                'gc_maxlifetime' => 31536000,
         		'use_cookies' => true,
         		'cookie_httponly' => true,
             ],
