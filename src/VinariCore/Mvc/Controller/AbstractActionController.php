@@ -92,8 +92,10 @@ abstract class AbstractActionController extends ZendAbstractActionController
             $config = $controller->getServiceLocator()->get('Config');
             $this->session   = new Container($config['session']['container_name']);
 
-            $controller->getViewModel()->webServerName = $_SERVER['SERVER_ADDR'];
-            $controller->getViewModel()->webServerEnvironment = APPLICATION_ENV;
+            if (!preg_match('/^cli/', php_sapi_name())) {
+                $controller->getViewModel()->webServerName = $_SERVER['SERVER_ADDR'];
+                $controller->getViewModel()->webServerEnvironment = APPLICATION_ENV;
+            }
         }, 100); // execute before executing action logic
 
     }
