@@ -39,6 +39,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
     const COLOUR_BOLDWHITE = "\033[1;37m";
 
     protected $viewModel;
+    protected $entityManager;
 
     public function __construct()
     {
@@ -86,6 +87,8 @@ abstract class AbstractActionController extends ZendAbstractActionController
     public function setEventManager(EventManagerInterface $events)
     {
         parent::setEventManager($events);
+
+        $this->entityManager = $this->getServiceLocator()->get('Doctrine\\ORM\\EntityManager');
 
         $controller = $this;
         $events->attach('dispatch', function ($e) use ($controller) {
