@@ -16,7 +16,7 @@ use VinariCore\Exception\InvalidArgumentException;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Session", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci", "row_format"="DYNAMIC"}, indexes={
+ * @ORM\Table(name="SessionEntity", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci", "row_format"="DYNAMIC"}, indexes={
  *     @ORM\Index(name="IDX_Session_Get", columns={"id", "name"}),
  *     @ORM\Index(name="IDX_Session_GetList1", columns={"is_active"}),
  *     @ORM\Index(name="IDX_Session_GetList2", columns={"is_deleted"}),

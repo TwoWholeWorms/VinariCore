@@ -71,7 +71,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Se
                     $config = $sm->get('Config');
                     $adapter = $sm->get('Zend\\Db\\Adapter\\Adapter');
 
-                    $tableGateway = new TableGateway('Session', $adapter);
+                    $tableGateway = new TableGateway('SessionEntity', $adapter);
                     $sessionSaveHandler = new DbTableGateway($tableGateway, new DbTableGatewayOptions());
                     return $sessionSaveHandler;
                 },
