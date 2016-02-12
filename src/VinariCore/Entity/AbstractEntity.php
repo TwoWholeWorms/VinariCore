@@ -325,7 +325,6 @@ abstract class AbstractEntity implements SoftDeleteInterface
     protected function getConstantsList($prefix)
     {
         $c = get_called_class();
-
         if (substr($prefix, 0, strlen($c . '::')) !== $c . '::') {
             $prefix = $c . '::' . $prefix;
         }
@@ -333,6 +332,9 @@ abstract class AbstractEntity implements SoftDeleteInterface
 
         $output = [];
         foreach ($oClass->getConstants() as $const => $value) {
+            if (substr($const, 0, strlen($c . '::')) !== $c . '::') {
+                $const = $c . '::' . $const;
+            }
             if (substr($const, 0, strlen($prefix)) !== $prefix) {
                 continue;
             }
