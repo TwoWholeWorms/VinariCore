@@ -342,4 +342,16 @@ abstract class AbstractEntity implements SoftDeleteInterface
         return $output;
     }
 
+    protected function generateValidValuesList($prefix)
+    {
+        $constants = $this->getConstantsList($prefix);
+
+        $values = [];
+        foreach ($constants as $key => $value) {
+            $values[] = $key . ' => ' . $value;
+        }
+
+        return implode(', ', $values);
+    }
+
 }
