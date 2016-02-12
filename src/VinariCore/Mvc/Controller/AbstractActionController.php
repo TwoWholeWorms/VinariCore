@@ -40,6 +40,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
 
     protected $viewModel;
     protected $entityManager;
+    protected $session;
 
     public function __construct()
     {
