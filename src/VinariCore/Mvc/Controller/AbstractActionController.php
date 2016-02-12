@@ -139,4 +139,19 @@ abstract class AbstractActionController extends ZendAbstractActionController
 
     }
 
+    public function generateRandomString($length = 8, $includeSymbols = false)
+    {
+        $symbols = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        if ($includeSymbols) {
+            $symbols .= '!@$£&*()_+-+=:;".><,`~§|';
+        }
+
+        $output = '';
+        $numSymbols = strlen($symbols) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $output .= $symbols[rand(0, $numSymbols)];
+        }
+        return $output;
+    }
+
 }
