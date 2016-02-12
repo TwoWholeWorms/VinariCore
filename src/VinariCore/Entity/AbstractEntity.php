@@ -311,4 +311,21 @@ abstract class AbstractEntity implements SoftDeleteInterface
         return $array;
     }
 
+    protected function isInConstantsList($prefix, $value)
+    {
+        $c = get_called_class();
+        $oClass = new \ReflectionClass($c);
+        foreach ($oClass->getConstants() as $const) {
+            if (substr($const, 0, strlen($prefix)) !== $prefix) {
+                continue;
+            }
+
+            if ($value === constant("{$c}::{$const}")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
