@@ -314,26 +314,29 @@ abstract class AbstractEntity implements SoftDeleteInterface
     protected function isInConstantsList($prefix, $value)
     {
         $constants = $this->getConstantsList($prefix);
-        foreach ($constants as $const) {
-            if ($value === constant($const)) {
+        foreach ($constants as $const => $constValue) {
+            if ($value === $constValue) {
                 return true;
             }
         }
-
         return false;
     }
 
     protected function getConstantsList($prefix)
     {
         $c = get_called_class();
+
+        if (substr($prefix, 0, strlen($c . '::')) !== $c . '::') {
+            $prefix = $c . '::' . $prefix;
+        }
         $oClass = new \ReflectionClass($c);
 
         $output = [];
-        foreach ($oClass->getConstants() as $const) {
+        foreach ($oClass->getConstants() as $const => $value) {
             if (substr($const, 0, strlen($prefix)) !== $prefix) {
                 continue;
             }
-            $output[] = $c . '::' . $const;
+            $output[$const] = $value;
         }
 
         return $output;
