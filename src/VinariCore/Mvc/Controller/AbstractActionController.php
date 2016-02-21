@@ -10,6 +10,7 @@
 
 namespace VinariCore\Mvc\Controller;
 
+use Doctrine\ORM\EntityManager;
 use VinariCore\Entity\Error;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController as ZendAbstractActionController;
@@ -38,16 +39,19 @@ abstract class AbstractActionController extends ZendAbstractActionController
     const COLOUR_BOLDCYAN = "\033[1;36m";
     const COLOUR_BOLDWHITE = "\033[1;37m";
 
+    /** @var ViewModel */
     protected $viewModel;
+
+    /** @var EntityManager */
     protected $entityManager;
+
+    /** @var Container */
     protected $session;
 
     public function __construct()
     {
-
         $this->viewModel = new ViewModel();
         $this->viewModel->success = false;
-
     }
 
     public function getViewModel()
@@ -93,6 +97,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
 
         $controller = $this;
         $events->attach('dispatch', function ($e) use ($controller) {
+            /** @var array $config */
             $config = $controller->getServiceLocator()->get('Config');
             $this->session   = new Container($config['session']['container_name']);
 
