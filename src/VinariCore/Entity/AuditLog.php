@@ -76,7 +76,7 @@ class AuditLog extends AbstractEntity
      *
      * @param string $message the message
      *
-     * @return self
+     * @return $this
      */
     public function setMessage($message)
     {
@@ -100,7 +100,7 @@ class AuditLog extends AbstractEntity
      *
      * @param string $entity the entity
      *
-     * @return self
+     * @return $this
      */
     public function setEntity($entity)
     {
@@ -124,7 +124,7 @@ class AuditLog extends AbstractEntity
      *
      * @param string $entityId the entity id
      *
-     * @return self
+     * @return $this
      */
     public function setEntityId($entityId)
     {
@@ -148,7 +148,7 @@ class AuditLog extends AbstractEntity
      *
      * @param array $additionalData the additional data
      *
-     * @return self
+     * @return $this
      */
     public function setAdditionalData(array $additionalData)
     {

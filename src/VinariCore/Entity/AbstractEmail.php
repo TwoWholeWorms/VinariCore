@@ -11,7 +11,6 @@
 namespace VinariCore\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use VinariCore\Exception\InvalidArgumentException;
 
 /**
@@ -23,18 +22,18 @@ abstract class AbstractEmail extends AbstractEntity
     protected static $foreignObjectDecamelisedKeys = ['user', 'sender', 'error'];
 
     /**
-     * @var User
+     * @var AbstractUser
      *
      * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id", nullable=true)
-     * @ORM\ManyToOne(targetEntity="User", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="AbstractUser", cascade={"all"})
      */
     protected $toUser;
 
     /**
-     * @var User
+     * @var AbstractUser
      *
      * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id", nullable=true)
-     * @ORM\ManyToOne(targetEntity="User", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="AbstractUser", cascade={"all"})
      */
     protected $fromUser;
 
@@ -106,21 +105,21 @@ abstract class AbstractEmail extends AbstractEntity
      *
      * @ORM\Column(name="processed_at", type="datetime", nullable=true)
      */
-    protected $processedAt = null;
+    protected $processedAt;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
-     * @ORM\Column(name="sentAt", type="datetime", nullable=true)
+     * @ORM\Column(name="sent_at", type="datetime", nullable=true)
      */
-    protected $sentAt = null;
+    protected $sentAt;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
-     * @ORM\Column(name="readAt", type="datetime", nullable=true)
+     * @ORM\Column(name="read_at", type="datetime", nullable=true)
      */
-    protected $readAt = null;
+    protected $readAt;
 
     /**
      * @var string
@@ -138,17 +137,10 @@ abstract class AbstractEmail extends AbstractEntity
     protected $error;
 
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-
-
     /**
      * Get the value of To User
      *
-     * @return User
+     * @return AbstractUser
      */
     public function getToUser()
     {
@@ -158,11 +150,11 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of To User
      *
-     * @param User toUser
+     * @param AbstractUser $toUser
      *
-     * @return self
+     * @return $this
      */
-    public function setToUser(User $toUser)
+    public function setToUser(AbstractUser $toUser)
     {
         $this->toUser = $toUser;
 
@@ -172,7 +164,7 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Get the value of From User
      *
-     * @return User
+     * @return AbstractUser
      */
     public function getFromUser()
     {
@@ -182,11 +174,11 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of From User
      *
-     * @param User fromUser
+     * @param AbstractUser $fromUser
      *
-     * @return self
+     * @return $this
      */
-    public function setFromUser(User $fromUser)
+    public function setFromUser(AbstractUser $fromUser)
     {
         $this->fromUser = $fromUser;
 
@@ -206,9 +198,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of To Addresses
      *
-     * @param string toAddresses
+     * @param string $toAddresses
      *
-     * @return self
+     * @return $this
      */
     public function setToAddresses($toAddresses)
     {
@@ -230,9 +222,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of Cc Addresses
      *
-     * @param string ccAddresses
+     * @param string $ccAddresses
      *
-     * @return self
+     * @return $this
      */
     public function setCcAddresses($ccAddresses)
     {
@@ -254,9 +246,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of Bcc Addresses
      *
-     * @param string bccAddresses
+     * @param string $bccAddresses
      *
-     * @return self
+     * @return $this
      */
     public function setBccAddresses($bccAddresses)
     {
@@ -278,9 +270,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of From Address
      *
-     * @param string fromAddress
+     * @param string $fromAddress
      *
-     * @return self
+     * @return $this
      */
     public function setFromAddress($fromAddress)
     {
@@ -302,9 +294,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of Subject
      *
-     * @param string subject
+     * @param string $subject
      *
-     * @return self
+     * @return $this
      */
     public function setSubject($subject)
     {
@@ -326,9 +318,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of Text Content
      *
-     * @param string textContent
+     * @param string $textContent
      *
-     * @return self
+     * @return $this
      */
     public function setTextContent($textContent)
     {
@@ -350,9 +342,9 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Set the value of Html Content
      *
-     * @param string htmlContent
+     * @param string $htmlContent
      *
-     * @return self
+     * @return $this
      */
     public function setHtmlContent($htmlContent)
     {
@@ -376,7 +368,7 @@ abstract class AbstractEmail extends AbstractEntity
      *
      * @param \DateTime processedAt
      *
-     * @return self
+     * @return $this
      */
     public function setProcessedAt(\DateTime $processedAt)
     {
@@ -400,13 +392,15 @@ abstract class AbstractEmail extends AbstractEntity
      *
      * @param string $status the status
      *
-     * @return self
+     * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function setStatus($status)
     {
-        $stati = ['queued', 'sending', 'sent', 'bounced', 'retry', 'failed'];
-        if (!is_string($status) || !in_array($status, $statuseses)) {
-            throw new InvalidArgumentException('Invalid status `' . print_r($status, true) . '` provided. Must be one of: ' . implode(', ', $statuseses));
+        $statuses = ['queued', 'sending', 'sent', 'bounced', 'retry', 'failed'];
+        if (!is_string($status) || !in_array($status, $statuses, true)) {
+            throw new InvalidArgumentException('Invalid status `' . print_r($status, true) . '` provided. Must be one of: ' . implode(', ', $statuses));
         }
         $this->status = $status;
 
@@ -416,7 +410,7 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Gets the value of sentAt.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getSentAt()
     {
@@ -426,11 +420,11 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Sets the value of sentAt.
      *
-     * @param DateTime $sentAt the sent at
+     * @param \DateTime $sentAt the sent at
      *
-     * @return self
+     * @return $this
      */
-    public function setSentAt(DateTime $sentAt)
+    public function setSentAt(\DateTime $sentAt)
     {
         $this->sentAt = $sentAt;
 
@@ -452,7 +446,7 @@ abstract class AbstractEmail extends AbstractEntity
      *
      * @param string $toName the to name
      *
-     * @return self
+     * @return $this
      */
     public function setToName($toName)
     {
@@ -476,7 +470,7 @@ abstract class AbstractEmail extends AbstractEntity
      *
      * @param string $fromName the from name
      *
-     * @return self
+     * @return $this
      */
     public function setFromName($fromName)
     {
@@ -500,11 +494,13 @@ abstract class AbstractEmail extends AbstractEntity
      *
      * @param Error $error the error
      *
-     * @return self
+     * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function setError($error)
     {
-        if (!is_null($error) && !($error instanceof Error)) {
+        if (null !== $error && !($error instanceof Error)) {
             throw new InvalidArgumentException('$error must be an instance of VinariCore\\Entity\\Error or null; `' . gettype($error) . '` passed.');
         }
         $this->error = $error;
@@ -516,7 +512,7 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Gets the value of readAt.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getReadAt()
     {
@@ -526,11 +522,11 @@ abstract class AbstractEmail extends AbstractEntity
     /**
      * Sets the value of readAt.
      *
-     * @param DateTime $readAt the read at
+     * @param \DateTime $readAt the read at
      *
-     * @return self
+     * @return $this
      */
-    public function setReadAt(DateTime $readAt)
+    public function setReadAt(\DateTime $readAt)
     {
         $this->readAt = $readAt;
 

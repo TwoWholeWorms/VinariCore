@@ -209,7 +209,7 @@ class Error extends AbstractEntity
      *
      * @param string $message the message
      *
-     * @return self
+     * @return $this
      */
     public function setMessage($message)
     {
@@ -233,7 +233,7 @@ class Error extends AbstractEntity
      *
      * @param int $code the code
      *
-     * @return self
+     * @return $this
      */
     public function setCode($code)
     {
@@ -257,7 +257,7 @@ class Error extends AbstractEntity
      *
      * @param string $file the file
      *
-     * @return self
+     * @return $this
      */
     public function setFile($file)
     {
@@ -281,7 +281,7 @@ class Error extends AbstractEntity
      *
      * @param int $line the line
      *
-     * @return self
+     * @return $this
      */
     public function setLine($line)
     {
@@ -305,7 +305,7 @@ class Error extends AbstractEntity
      *
      * @param array $stackTrace the stack trace
      *
-     * @return self
+     * @return $this
      */
     public function setStackTrace(array $stackTrace)
     {
@@ -329,7 +329,7 @@ class Error extends AbstractEntity
      *
      * @param array $serverParams the server params
      *
-     * @return self
+     * @return $this
      */
     public function setServerParams(array $serverParams)
     {
@@ -353,7 +353,7 @@ class Error extends AbstractEntity
      *
      * @param array $getParams the get params
      *
-     * @return self
+     * @return $this
      */
     public function setGetParams(array $getParams)
     {
@@ -377,7 +377,7 @@ class Error extends AbstractEntity
      *
      * @param array $postParams the post params
      *
-     * @return self
+     * @return $this
      */
     public function setPostParams(array $postParams)
     {
@@ -401,7 +401,7 @@ class Error extends AbstractEntity
      *
      * @param array $filesParams the files params
      *
-     * @return self
+     * @return $this
      */
     public function setFilesParams(array $filesParams)
     {
@@ -425,7 +425,7 @@ class Error extends AbstractEntity
      *
      * @param array $requestParams the request params
      *
-     * @return self
+     * @return $this
      */
     public function setRequestParams(array $requestParams)
     {
@@ -449,7 +449,7 @@ class Error extends AbstractEntity
      *
      * @param array $sessionParams the session params
      *
-     * @return self
+     * @return $this
      */
     public function setSessionParams(array $sessionParams)
     {
@@ -473,7 +473,7 @@ class Error extends AbstractEntity
      *
      * @param array $envParams the env params
      *
-     * @return self
+     * @return $this
      */
     public function setEnvParams(array $envParams)
     {
@@ -497,7 +497,7 @@ class Error extends AbstractEntity
      *
      * @param array $cookieParams the cookie params
      *
-     * @return self
+     * @return $this
      */
     public function setCookieParams(array $cookieParams)
     {
@@ -521,7 +521,7 @@ class Error extends AbstractEntity
      *
      * @param string $httpStatusCode the http status code
      *
-     * @return self
+     * @return $this
      */
     public function setHttpStatusCode($httpStatusCode)
     {
@@ -545,7 +545,7 @@ class Error extends AbstractEntity
      *
      * @param string $rawHttpPostData the raw http post data
      *
-     * @return self
+     * @return $this
      */
     public function setRawHttpPostData($rawHttpPostData)
     {
@@ -569,7 +569,7 @@ class Error extends AbstractEntity
      *
      * @param string $lastPhpErrorMessage the last php error message
      *
-     * @return self
+     * @return $this
      */
     public function setLastPhpErrorMessage($lastPhpErrorMessage)
     {
@@ -593,7 +593,7 @@ class Error extends AbstractEntity
      *
      * @param int $argc the argc
      *
-     * @return self
+     * @return $this
      */
     public function setArgc($argc)
     {
@@ -617,7 +617,7 @@ class Error extends AbstractEntity
      *
      * @param array $argv the argv
      *
-     * @return self
+     * @return $this
      */
     public function setArgv(array $argv)
     {
@@ -641,7 +641,7 @@ class Error extends AbstractEntity
      *
      * @param array $context the context
      *
-     * @return self
+     * @return $this
      */
     public function setContext(array $context)
     {
@@ -665,7 +665,7 @@ class Error extends AbstractEntity
      *
      * @param array $headers the headers
      *
-     * @return self
+     * @return $this
      */
     public function setHeaders(array $headers)
     {
@@ -689,7 +689,7 @@ class Error extends AbstractEntity
      *
      * @param string $body the body
      *
-     * @return self
+     * @return $this
      */
     public function setBody($body)
     {

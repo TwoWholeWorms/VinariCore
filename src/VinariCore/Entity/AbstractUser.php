@@ -13,7 +13,6 @@ namespace VinariCore\Entity;
 use BjyAuthorize\Provider\Role\ProviderInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use VinariCore\Exception\InvalidArgumentException;
 use ZfcUser\Entity\UserInterface;
 
 /**
@@ -76,21 +75,21 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     protected $roles;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="activated_at", type="datetime", nullable=true)
      */
     protected $activatedAt;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="first_logged_in_at", type="datetime", nullable=true)
      */
     protected $firstLoggedInAt;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="last_logged_in_at", type="datetime", nullable=true)
      */
@@ -103,6 +102,7 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     public function __construct()
     {
         parent::__construct();
+
         $this->roles       = new ArrayCollection();
     }
 
@@ -122,11 +122,13 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param string $username
      *
-     * @return void
+     * @return $this
      */
     public function setUsername($username)
     {
         $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -144,11 +146,13 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param string $email
      *
-     * @return void
+     * @return $this
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -166,11 +170,13 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param string $displayName
      *
-     * @return void
+     * @return $this
      */
     public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
+
+        return $this;
     }
 
     /**
@@ -188,11 +194,13 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param string $password
      *
-     * @return void
+     * @return $this
      */
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
     }
 
     /**
@@ -210,11 +218,13 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param int $state
      *
-     * @return void
+     * @return $this
      */
     public function setState($state)
     {
         $this->state = $state;
+
+        return $this;
     }
 
     /**
@@ -232,21 +242,25 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param Role $role
      *
-     * @return void
+     * @return $this
      */
     public function addRole($role)
     {
-        $this->roles[] = $role;
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
+
+        return $this;
     }
 
     /**
      * Sets the roles
      *
-     * @param \Doctrine\Common\Collections\Collection $roles the roles
+     * @param ArrayCollection $roles the roles
      *
-     * @return self
+     * @return $this
      */
-    public function setRoles(\Doctrine\Common\Collections\Collection $roles)
+    public function setRoles(ArrayCollection $roles)
     {
         $this->roles = $roles;
 
@@ -268,7 +282,7 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param string $givenName the given name
      *
-     * @return self
+     * @return $this
      */
     public function setGivenName($givenName)
     {
@@ -292,7 +306,7 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
      *
      * @param string $familyName the family name
      *
-     * @return self
+     * @return $this
      */
     public function setFamilyName($familyName)
     {
@@ -304,7 +318,7 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     /**
      * Gets the value of activatedAt.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getActivatedAt()
     {
@@ -314,9 +328,9 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     /**
      * Sets the value of activatedAt.
      *
-     * @param DateTime $activatedAt the activated at
+     * @param \DateTime $activatedAt the activated at
      *
-     * @return self
+     * @return $this
      */
     public function setActivatedAt(\DateTime $activatedAt)
     {
@@ -328,7 +342,7 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     /**
      * Gets the value of firstLoggedInAt.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getFirstLoggedInAt()
     {
@@ -338,9 +352,9 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     /**
      * Sets the value of firstLoggedInAt.
      *
-     * @param DateTime $firstLoggedInAt the first logged in at
+     * @param \DateTime $firstLoggedInAt the first logged in at
      *
-     * @return self
+     * @return $this
      */
     public function setFirstLoggedInAt(\DateTime $firstLoggedInAt)
     {
@@ -352,7 +366,7 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     /**
      * Gets the value of lastLoggedInAt.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastLoggedInAt()
     {
@@ -362,9 +376,9 @@ abstract class AbstractUser extends AbstractEntity implements UserInterface, Pro
     /**
      * Sets the value of lastLoggedInAt.
      *
-     * @param DateTime $lastLoggedInAt the last logged in at
+     * @param \DateTime $lastLoggedInAt the last logged in at
      *
-     * @return self
+     * @return $this
      */
     public function setLastLoggedInAt(\DateTime $lastLoggedInAt)
     {

@@ -12,7 +12,6 @@ namespace VinariCore\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use VinariCore\Entity\SoftDeleteInterface;
 
 /**
  * @ORM\MappedSuperclass
@@ -83,12 +82,14 @@ abstract class AbstractEntity implements SoftDeleteInterface
      *
      * @param int $id the id
      *
-     * @return self
+     * @throws \InvalidArgumentException
+     *
+     * @return $this
      */
     public function setId($id)
     {
-        if (!is_string($id) && !preg_match('/^[1-9]\d*$/', $id) && !is_integer($id) && !is_null($id)) {
-            throw new InvalidArgumentException('$id must be a string matching /^[1-9]\d*$/ or an integer; `' . gettype($id) . '` passed.');
+        if (null !== $id && !is_string($id) && !is_int($id) && !preg_match('/^[1-9]\d*$/', (string)$id)) {
+            throw new \InvalidArgumentException('$id must be a string matching /^[1-9]\d*$/ or an integer; `' . gettype($id) . '` passed.');
         }
         $this->id = (string)$id;
 
@@ -110,7 +111,7 @@ abstract class AbstractEntity implements SoftDeleteInterface
      *
      * @param bool $isActive the is active
      *
-     * @return self
+     * @return $this
      */
     public function setIsActive($isActive)
     {
@@ -134,7 +135,7 @@ abstract class AbstractEntity implements SoftDeleteInterface
      *
      * @param bool $isDeleted the is deleted
      *
-     * @return self
+     * @return $this
      */
     public function setIsDeleted($isDeleted)
     {
@@ -158,7 +159,7 @@ abstract class AbstractEntity implements SoftDeleteInterface
      *
      * @param \DateTime createdAt
      *
-     * @return self
+     * @return $this
      */
     public function setCreatedAt(\DateTime $value)
     {
@@ -182,7 +183,7 @@ abstract class AbstractEntity implements SoftDeleteInterface
      *
      * @param \DateTime lastUpdatedAt
      *
-     * @return self
+     * @return $this
      */
     public function setLastUpdatedAt(\DateTime $value)
     {
@@ -194,6 +195,8 @@ abstract class AbstractEntity implements SoftDeleteInterface
     /**
      * Horribly-written generic function to convert an Entity into an array, auto-expanding things if necessary.
      *
+     * @TODO: Unhorrify this.
+     *
      * @param  boolean $allowExpand         Tells the function to include related objects in the output (eg, if the entity has a $user property, include the actual object alongside the user_id)
      * @param  array   $skipDecamelisedKeys A list of stuff to omit from the final output
      *
@@ -201,7 +204,7 @@ abstract class AbstractEntity implements SoftDeleteInterface
      */
     public function __toArray($allowExpand = true, $skipDecamelisedKeys = [])
     {
-        $expand = isset($_REQUEST['expand']) && in_array($_REQUEST['expand'], ['on', 'yes', 'true', '1']);
+        $expand = isset($_REQUEST['expand']) && in_array($_REQUEST['expand'], ['on', 'yes', 'true', '1'], true);
         $vars = get_object_vars($this);
 
         $c = get_called_class();
@@ -213,7 +216,9 @@ abstract class AbstractEntity implements SoftDeleteInterface
             }, trim($key, '_'));
 
             // If the decamelised property is in the list of stuff to skip then… skip it o.o
-            if (in_array($decamelisedKey, $skipDecamelisedKeys)) continue;
+            if (in_array($decamelisedKey, $skipDecamelisedKeys, true)) {
+                continue;
+            }
 
             if (!is_object($value) && !is_array($value)) {
                 $array[$decamelisedKey] = $value;
@@ -244,9 +249,9 @@ abstract class AbstractEntity implements SoftDeleteInterface
 
                 $idsArrayKey = preg_replace('/s$/', '', preg_replace('/ies$/', 'y', $decamelisedKey)) . '_ids';
                 $array[$idsArrayKey] = $ids;
-            } else if (is_object($value) && get_class($value) == 'DateTime') {
+            } else if (is_object($value) && get_class($value) === 'DateTime') {
                 $array[$decamelisedKey] = $value->format('Y-m-d H:i:s');
-            } else if (is_object($value) && get_class($value) != 'Doctrine\\ORM\\PersistentCollection' && $expand && $allowExpand) {
+            } else if (is_object($value) && get_class($value) !== 'Doctrine\\ORM\\PersistentCollection' && $expand && $allowExpand) {
                 try {
                     $array[$decamelisedKey] = $value->__toArray(false, $skipDecamelisedKeys);
                     $array[$decamelisedKey . '_id'] = $value->getId();
@@ -254,9 +259,9 @@ abstract class AbstractEntity implements SoftDeleteInterface
                     $array[$decamelisedKey] = null;
                     $array[$decamelisedKey . '_id'] = null;
                 }
-            } else if (is_object($value) && get_class($value) != 'Doctrine\\ORM\\PersistentCollection' && !($value instanceof ArrayCollection) && (!$expand || !$allowExpand)) {
+            } else if (is_object($value) && get_class($value) !== 'Doctrine\\ORM\\PersistentCollection' && !($value instanceof ArrayCollection) && (!$expand || !$allowExpand)) {
                 $array[$decamelisedKey . '_id'] = $value->getId();
-            } else if (is_object($value) && ((get_class($value) == 'Doctrine\\ORM\\PersistentCollection') || ($value instanceof ArrayCollection)) && $expand && $allowExpand) {
+            } else if (is_object($value) && ((get_class($value) === 'Doctrine\\ORM\\PersistentCollection') || ($value instanceof ArrayCollection)) && $expand && $allowExpand) {
                 $data = [];
                 $ids = [];
                 foreach ($value as $v) {
@@ -273,7 +278,7 @@ abstract class AbstractEntity implements SoftDeleteInterface
 
                 $idsArrayKey = preg_replace('/s$/', '', preg_replace('/ies$/', 'y', $decamelisedKey)) . '_ids';
                 $array[$idsArrayKey] = $ids;
-            } else if (is_object($value) && ((get_class($value) == 'Doctrine\\ORM\\PersistentCollection') || ($value instanceof ArrayCollection)) && (!$expand || !$allowExpand)) {
+            } else if (is_object($value) && ((get_class($value) === 'Doctrine\\ORM\\PersistentCollection') || ($value instanceof ArrayCollection)) && (!$expand || !$allowExpand)) {
                 $ids = [];
                 foreach ($value as $v) {
                     if (method_exists($v, 'getId')) {
@@ -287,12 +292,12 @@ abstract class AbstractEntity implements SoftDeleteInterface
                 // Don't do anything
             }
 
-            if (preg_match('/^is_/', $decamelisedKey)) {
+            if (0 !== strpos($decamelisedKey, 'is_')) {
                 $array[$decamelisedKey] = (bool)$array[$decamelisedKey];
             }
 
             // Makes the result a bit more consistent
-            if (in_array($decamelisedKey, $c::$foreignObjectDecamelisedKeys) && array_key_exists($decamelisedKey, $array) && !array_key_exists($decamelisedKey . '_id', $array)) {
+            if (in_array($decamelisedKey, $c::$foreignObjectDecamelisedKeys, true) && array_key_exists($decamelisedKey, $array) && !array_key_exists($decamelisedKey . '_id', $array)) {
                 if (!$expand) unset($array[$decamelisedKey]);
                 $array[$decamelisedKey . '_id'] = null;
             }
@@ -325,17 +330,17 @@ abstract class AbstractEntity implements SoftDeleteInterface
     protected function getConstantsList($prefix)
     {
         $c = get_called_class();
-        if (substr($prefix, 0, strlen($c . '::')) !== $c . '::') {
+        if (0 !== strpos($prefix, $c . '::')) {
             $prefix = $c . '::' . $prefix;
         }
         $oClass = new \ReflectionClass($c);
 
         $output = [];
         foreach ($oClass->getConstants() as $const => $value) {
-            if (substr($const, 0, strlen($c . '::')) !== $c . '::') {
+            if (0 !== strpos($const, $c . '::')) {
                 $const = $c . '::' . $const;
             }
-            if (substr($const, 0, strlen($prefix)) !== $prefix) {
+            if (0 !== strpos($const, $prefix)) {
                 continue;
             }
             $output[$const] = $value;

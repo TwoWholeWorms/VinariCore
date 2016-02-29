@@ -36,11 +36,6 @@ class Role extends AbstractEntity implements HierarchicalRoleInterface
     protected $parent;
 
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
 
     /**
      * Get the role id.
@@ -57,11 +52,13 @@ class Role extends AbstractEntity implements HierarchicalRoleInterface
      *
      * @param string $roleId
      *
-     * @return void
+     * @return $this
      */
     public function setRoleId($roleId)
     {
         $this->roleId = (string) $roleId;
+
+        return $this;
     }
 
     /**
@@ -77,13 +74,15 @@ class Role extends AbstractEntity implements HierarchicalRoleInterface
     /**
      * Set the parent role.
      *
-     * @param Role $role
+     * @param Role $parent
      *
-     * @return void
+     * @return $this
      */
     public function setParent(Role $parent)
     {
         $this->parent = $parent;
+
+        return $this;
     }
 
 }

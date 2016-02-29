@@ -21,12 +21,12 @@ interface SoftDeleteInterface
 
     /**
      * @param int $isDeleted
-     * @return self
+     * @return $this
      */
     public function setIsDeleted($isDeleted);
 
     /**
-     * @return self
+     * @return $this
      */
     public function getIsDeleted();
 

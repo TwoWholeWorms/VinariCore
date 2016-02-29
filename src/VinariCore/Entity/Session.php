@@ -11,7 +11,6 @@
 namespace VinariCore\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use VinariCore\Exception\InvalidArgumentException;
 
 /**
@@ -64,11 +63,6 @@ class Session extends AbstractEntity
     protected $data;
 
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
 
     /**
      * Gets the value of id.
@@ -83,13 +77,15 @@ class Session extends AbstractEntity
     /**
      * Sets the value of id.
      *
-     * @param string $id the id
+     * @param $id string
      *
-     * @return self
+     * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function setId($id)
     {
-        if (!is_null($id) && (!is_string($id) || !preg_match('/^[0-9a-z]+$/i', $id))) {
+        if (null !== $id && (!is_string($id) || !preg_match('/^[0-9a-z]+$/i', $id))) {
             throw new InvalidArgumentException('$id must be a string matching /^[0-9a-z]+$/i; `' . gettype($id) . '` passed.');
         }
         $this->id = $id;
@@ -110,9 +106,9 @@ class Session extends AbstractEntity
     /**
      * Set the value of Name
      *
-     * @param string name
+     * @param $value string
      *
-     * @return self
+     * @return $this
      */
     public function setName($value)
     {
@@ -134,9 +130,9 @@ class Session extends AbstractEntity
     /**
      * Set the value of Modified
      *
-     * @param string modified
+     * @param $value string
      *
-     * @return self
+     * @return $this
      */
     public function setModified($value)
     {
@@ -158,9 +154,9 @@ class Session extends AbstractEntity
     /**
      * Set the value of Lifetime
      *
-     * @param string lifetime
+     * @param $value string
      *
-     * @return self
+     * @return $this
      */
     public function setLifetime($value)
     {
@@ -182,9 +178,9 @@ class Session extends AbstractEntity
     /**
      * Set the value of Data
      *
-     * @param string data
+     * @param $value string
      *
-     * @return self
+     * @return $this
      */
     public function setData($value)
     {
