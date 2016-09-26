@@ -10,7 +10,6 @@
 
 namespace VinariCore\Session;
 
-use Zend\EventManager\EventManagerInterface;
 use Zend\Session\SessionManager as BaseSessionManager;
 use Zend\Session\Storage;
 use Zend\Session\SaveHandler;
@@ -48,7 +47,7 @@ class SessionManager extends BaseSessionManager
         }
 
         $oldSessionData = array();
-        if (isset($_SESSION)) {
+        if (null !== $_SESSION) {
             $oldSessionData = $_SESSION;
         }
 
@@ -57,7 +56,7 @@ class SessionManager extends BaseSessionManager
         }
 
         if ($oldSessionData instanceof \Traversable
-            || (! empty($oldSessionData) && is_array($oldSessionData))
+            || (is_array($oldSessionData) && 0 === count($oldSessionData))
         ) {
             $_SESSION = ArrayUtils::merge($oldSessionData, $_SESSION, true);
         }
@@ -66,7 +65,7 @@ class SessionManager extends BaseSessionManager
 
         // Since session is starting, we need to potentially repopulate our
         // session storage
-        if ($storage instanceof Storage\SessionStorage && $_SESSION !== $storage) {
+        if (($storage instanceof Storage\SessionStorage) && $_SESSION !== $storage) {
             if (!$preserveStorage) {
                 $storage->fromArray($_SESSION);
             }

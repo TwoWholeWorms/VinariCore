@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManager;
 use VinariCore\Entity\Error;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController as ZendAbstractActionController;
+use Zend\ServiceManager\ServiceManager;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
@@ -52,6 +53,11 @@ abstract class AbstractActionController extends ZendAbstractActionController
     {
         $this->viewModel = new ViewModel();
         $this->viewModel->success = false;
+    }
+
+    public function setServiceManager(ServiceManager $sm)
+    {
+        $this->serviceManager = $sm;
     }
 
     public function getViewModel()
