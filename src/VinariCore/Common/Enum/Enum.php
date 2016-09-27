@@ -8,7 +8,7 @@
 namespace VinariCore\Common\Enum;
 
 use VinariCore\Exception\NotSupportedException;
-use Zend\Server\Reflection\ReflectionClass;
+use ReflectionClass;
 
 abstract class Enum
 {
